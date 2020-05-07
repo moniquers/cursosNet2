@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using CasaDoCodigo.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace CasaDoCodigo
 {
@@ -32,6 +30,7 @@ namespace CasaDoCodigo
             );
 
             services.AddTransient<IDataService, DataService>();
+            services.AddTransient<IProdutoRepository, ProdutoRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
