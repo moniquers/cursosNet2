@@ -18,9 +18,14 @@ namespace CasaDoCodigo.Repositories
 
         public void SaveProdutos(List<Livro> livros)
         {
+            //var livrosParaInserir = livros.Where(x => !_dbSet.Any(d => d.Codigo == x.Codigo));
+
+            //if (livrosParaInserir.Any())
+            //    _dbSet.AddRange(livrosParaInserir.Select(livro => new Produto(livro.Codigo, livro.Nome, livro.Preco)));
+
             foreach (var livro in livros)
             {
-                if (_dbSet.Where(p => p.Codigo == livro.Codigo).Any())
+                if (!_dbSet.Where(p => p.Codigo == livro.Codigo).Any())
                 {
                     _dbSet.Add(new Produto(livro.Codigo, livro.Nome, livro.Preco));
                 }

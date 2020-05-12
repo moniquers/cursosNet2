@@ -22,11 +22,15 @@ namespace CasaDoCodigo
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-
+            
             var connectionString = Configuration.GetConnectionString("Default");
 
             services.AddDbContext<ApplicationContext>(
-                options => options.UseSqlServer(connectionString)
+                options =>
+                {
+                    options.UseSqlServer(connectionString);
+                    options.EnableSensitiveDataLogging(false);
+                }
             );
 
             services.AddTransient<IDataService, DataService>();
@@ -55,11 +59,11 @@ namespace CasaDoCodigo
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Pedido}/{action=Carrossel}/{id?}");
+                    template: "{controller=Pedido}/{action=Carrossel}/{codigo?}");
             });
 
             var dataService = serviceProvider.GetService<IDataService>();
             dataService.InicializaDB();
-        }     
+        }
     }
 }
