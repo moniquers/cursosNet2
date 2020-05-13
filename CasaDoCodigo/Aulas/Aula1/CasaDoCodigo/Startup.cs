@@ -22,7 +22,9 @@ namespace CasaDoCodigo
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            
+            services.AddDistributedMemoryCache();
+            services.AddSession();
+
             var connectionString = Configuration.GetConnectionString("Default");
 
             services.AddDbContext<ApplicationContext>(
@@ -54,7 +56,7 @@ namespace CasaDoCodigo
             }
 
             app.UseStaticFiles();
-
+            app.UseSession();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
