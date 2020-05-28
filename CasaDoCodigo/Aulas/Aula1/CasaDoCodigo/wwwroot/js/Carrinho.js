@@ -1,6 +1,4 @@
-﻿
-
-class Carrinho {
+﻿class Carrinho {
 
     clickIncremento(btn) {
         let data = this.getData(btn);
@@ -36,6 +34,11 @@ class Carrinho {
             type: "POST",
             contentType: "application/json",
             data: JSON.stringify(data)
+        }).done(function (response) {
+            let itemPedido = response.itemPedido;
+            let linhaDoItem = $('[item-id=' + itemPedido.id + ']');
+            linhaDoItem.find('input').val(itemPedido.quantidade);
+            debugger;
         });
     }
 
