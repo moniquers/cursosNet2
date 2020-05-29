@@ -25,8 +25,8 @@ namespace CasaDoCodigo.Repositories
             var produto = _context.Set<Produto>()
                 .Where(p => p.Codigo == codigo)
                 .SingleOrDefault();
-            
-            if(produto == null)
+
+            if (produto == null)
             {
                 throw new ArgumentException("Produto não encontrado");
             }
@@ -36,8 +36,8 @@ namespace CasaDoCodigo.Repositories
             var itemPedido = _context.Set<ItemPedido>()
                 .Where(i => i.Produto.Codigo == codigo && i.Pedido.Id == pedido.Id)
                 .SingleOrDefault();
-            
-            if(itemPedido == null)
+
+            if (itemPedido == null)
             {
                 itemPedido = new ItemPedido(pedido, produto, 1, produto.Preco);
 
@@ -57,8 +57,8 @@ namespace CasaDoCodigo.Repositories
                     .ThenInclude(p => p.Produto)
                 .Where(p => p.Id == pedidoId)
                 .SingleOrDefault();
-            
-            if(pedido == null)
+
+            if (pedido == null)
             {
                 pedido = new Pedido();
                 _dbSet.Add(pedido);
@@ -86,6 +86,10 @@ namespace CasaDoCodigo.Repositories
             if (itemPedidoDB != null)
             {
                 itemPedidoDB.AtualizaQuantidade(itemPedido.Quantidade);
+                if (itemPedido.Quantidade == 0)
+                {
+                    _itemPedidoRepository.RemoveItemPedido(itemPedido.Id);
+                }
                 _context.SaveChanges();
 
                 var carrinhoViewModel = new CarrinhoViewModel(GetPedido().Itens);
