@@ -12,7 +12,7 @@ namespace CasaDoCodigo.Controllers
         private readonly IPedidoRepository _pedidoRepository;
         private readonly IItemPedidoRepository _itemPedidoRepository;
 
-        public PedidoController(IProdutoRepository produtoRepository, 
+        public PedidoController(IProdutoRepository produtoRepository,
             IPedidoRepository pedidoRepository,
             IItemPedidoRepository itemPedidoRepository
             )
@@ -42,13 +42,24 @@ namespace CasaDoCodigo.Controllers
 
         public IActionResult Cadastro()
         {
-            return View();
+            var pedido = _pedidoRepository.GetPedido();
+
+            if (pedido == null)
+            {
+                return RedirectToAction("Carrossel");
+            }
+
+            return View(pedido.Cadastro);
         }
 
-        public IActionResult Resumo()
+        [HttpPost]
+        public IActionResult Resumo(Cadastro cadastro)
         {
-            Pedido pedido = _pedidoRepository.GetPedido();
-            return View(pedido);
+            if (ModelState.IsValid)
+            {
+                return View(_pedidoRepository.UpdateCadastro(cadastro));
+            }
+            return RedirectToAction("Cadastro");
         }
 
         [HttpPost]

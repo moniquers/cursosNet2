@@ -11,13 +11,16 @@ namespace CasaDoCodigo.Repositories
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IItemPedidoRepository _itemPedidoRepository;
+        private readonly ICadastroRepository _cadastroRepository;
 
         public PedidoRepository(ApplicationContext context,
             IHttpContextAccessor httpContextAccessor,
-            IItemPedidoRepository itemPedidoRepository) : base(context)
+            IItemPedidoRepository itemPedidoRepository,
+            ICadastroRepository cadastroRepository) : base(context)
         {
             _httpContextAccessor = httpContextAccessor;
             _itemPedidoRepository = itemPedidoRepository;
+            _cadastroRepository = cadastroRepository;
         }
 
         public void AddItem(string codigo)
@@ -100,5 +103,11 @@ namespace CasaDoCodigo.Repositories
 
         }
 
+        public Pedido UpdateCadastro(Cadastro cadastro)
+        {
+            var pedido = GetPedido();
+            _cadastroRepository.Update(pedido.Cadastro.Id, cadastro);
+            return pedido;
+        }
     }
 }
